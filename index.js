@@ -69,7 +69,7 @@ function savePost(error, post) {
           };
           var uploader = s3Client.uploadFile(params);
           uploader.on('error', function(err) {
-            console.error('[x] Unable to upload:', err.stack);
+            console.error('[x] Unable to upload, Please check your credential is correct.', err.stack);
           });
         }
 
