@@ -45,7 +45,7 @@ function savePost(error, post) {
   var file = './post/' + category + '/' + id + '.json';
 
   ensureExists('./post/' + category + '/', 0744, function(err) {
-    jsonfile.writeFile(file, rawPost, function(err) {
+    jsonfile.writeFile(file, rawPost, {encoding: 'utf-8'}, function(err) {
       if (!err) {
         console.log('[*] Save a post');
 
