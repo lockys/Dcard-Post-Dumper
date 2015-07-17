@@ -126,5 +126,13 @@ function startGetPost() {
 
 function main() {
   welcomeMessage();
-  startGetPost();
+  ensureExists('./post/', 0744, function(err) {
+    if (!err) {
+      console.log('[!] Creating post/ folder.');
+      startGetPost();
+    } else {
+      console.error('[x] post/ folder failed to create.');
+      process.exit();
+    }
+  });
 }
