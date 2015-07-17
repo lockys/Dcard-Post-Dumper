@@ -13,7 +13,7 @@ Get started:
 $ git clone https://github.com/lockys/Dcard-Post-Dumper.git
 $ cd Dcard-Post-Dumper
 $ node index.js
-Dcard post dumper
+Dcard Post Dumper
 1.0.0 alpha edition @ 2015/07/17
 [*] I wake up, getting posts now.
 [!] Latest Post ID is 384947
