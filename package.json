@@ -12,6 +12,7 @@
     "dcard": "^1.0.3",
     "get-urls": "^5.0.0",
     "jsonfile": "^2.2.1",
+    "minimist": "^1.1.1",
     "request": "^2.58.0"
   }
 }

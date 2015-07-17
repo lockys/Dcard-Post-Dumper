@@ -6,11 +6,23 @@ var getUrls = require('get-urls');
 var jsonfile = require('jsonfile');
 var Dcard = require('dcard');
 var fs = require('fs');
-var s3Client = require('./lib/aws-s3-client');
+var argv = require('minimist')(process.argv.slice(2));
 var Dcard = new Dcard();
 var STOP_POST_ID;
 var TIMEOUT_NUM = 10000;
 var STOP_PATH = './stop-point.json';
+
+if (argv.s) {
+  var s3Client = require('./lib/aws-s3-client');
+
+  if (argv.b === true) {
+    console.error(new Error('Please specify you bucket name in S3 with -b bucketName'));
+    process.exit();
+  } else if (typeof argv.b === 'undefined') {
+    console.error(new Error('Please specify you bucket name in S3 with -b bucketName'));
+    process.exit();
+  }
+}
 
 main();
 
@@ -49,17 +61,20 @@ function savePost(error, post) {
       if (!err) {
         console.log('[*] Save a post');
 
-        var params = {
-          localFile: file,
-          s3Params: {
-            Bucket: 'dcard-posts',
-            Key: category + '/' + id + '.json'
-          }
-        };
-        var uploader = s3Client.uploadFile(params);
-        uploader.on('error', function(err) {
-          console.error('unable to upload:', err.stack);
-        });
+        //Enable S3 Uploader.
+        if (argv.s && argv.b) {
+          var params = {
+            localFile: file,
+            s3Params: {
+              Bucket: argv.b,
+              Key: category + '/' + id + '.json'
+            }
+          };
+          var uploader = s3Client.uploadFile(params);
+          uploader.on('error', function(err) {
+            console.error('[x] Unable to upload:', err.stack);
+          });
+        }
 
       }else {
         console.error(err);
@@ -83,6 +98,7 @@ function ensureExists(path, mask, cb) {
 }
 
 function welcomeMessage() {
+  console.log('Dcard post dumper');
   console.log('1.0.0 alpha edition @ 2015/07/17');
 }
 
