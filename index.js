@@ -79,11 +79,7 @@ function ensureExists(path, mask, cb) {
 }
 
 function welcomeMessage() {
-  console.log('+-+ +--+-+-+-+-+ +-+-+-+-+-+-+ +-+-+-+-+-+-+ +-+');
-  console.log('|=| |狄|c|a|r|d| |I|m|a|g|e|s| |h|e|l|p|e|r| |=|');
-  console.log('+-+ +--+-+-+-+-+ +-+-+-+-+-+-+ +-+-+-+-+-+-+ +-+');
-  console.log('1.0.0 alpha edition @ 2015/06/25');
-  console.log('[!] Please note thar all the images belong to the original author, DO NOT use for illigal purpose.');
+  console.log('1.0.0 alpha edition @ 2015/07/17');
 }
 
 function startGetPost() {

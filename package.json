@@ -1,7 +1,7 @@
 {
-  "name": "0card-images-helper",
-  "version": "1.0.1",
-  "description": "Get images from 0card easily for you.",
+  "name": "Periodically-get-posts",
+  "version": "0.0.1",
+  "description": "Get dcard posts periodically",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
