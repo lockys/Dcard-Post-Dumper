@@ -4,7 +4,8 @@ Usage:
 ==
 - Dump posts of [Dcard](https://www.dcard.tw/) and save it in JSON Format.
 - You can optionally upload this post to AWS S3.
-- Record the last post ID you saved before so that you won't dump the same post agian. You can configure the file  **[stop-point.json](https://github.com/lockys/Dcard-Post-Dumper/blob/master/stop-point.json)** if you want to dump it again, the value **20000** means your will dump the posts from the post whose ID number is 20000 to the latest post ID.
+- Record the last post ID you saved before so that you won't dump the same post agian.   
+  You can configure the file  **[stop-point.json](https://github.com/lockys/Dcard-Post-Dumper/blob/master/stop-point.json)** if   you want to dump it again, the value **20000** means your will dump the posts from the post whose ID number is 20000 to the     latest post ID.
 
 Get started:
 ==
