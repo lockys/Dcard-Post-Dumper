@@ -1,0 +1,17 @@
+{
+  "name": "0card-images-helper",
+  "version": "1.0.1",
+  "description": "Get images from 0card easily for you.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Calvin Jeng <locky4567@gmail.com> (https://github.com/lockys)",
+  "license": "MIT",
+  "dependencies": {
+    "dcard": "^1.0.3",
+    "get-urls": "^5.0.0",
+    "jsonfile": "^2.2.1",
+    "request": "^2.58.0"
+  }
+}
