@@ -22,7 +22,7 @@ Upload to S3:
 ==
 Specify your credential id and key of AWS S3 in **[s3-setting.js](https://github.com/lockys/Dcard-Post-Dumper/blob/master/s3-setting.js)** and DO NOT forget to create a bucket for your posts.
 ```
-# eanble the functionality of uploading to S3
+# Enable the functionality of uploading to S3
 $ node index.js -s <bucket-name> 
 ```
 LICENCE:
