@@ -1,6 +1,9 @@
+# folders
 node_modules
 images
 development
+
+# files
 get-image.js
 lib/download.js
 lib/image-url-parser.js
