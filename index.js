@@ -1,3 +1,6 @@
+/***
+Author: Calvin Jeng
+***/
 var request = require('request');
 var getUrls = require('get-urls');
 var jsonfile = require('jsonfile');
@@ -5,33 +8,34 @@ var Dcard = require('dcard');
 var fs = require('fs');
 var s3Client = require('./lib/aws-s3-client');
 var Dcard = new Dcard();
-var STOP_POINT;
+var STOP_POST_ID;
+var TIMEOUT_NUM = 10000;
 var STOP_PATH = './stop-point.json';
 
 main();
 
-function getPostContent(index, step) {
-  if (STOP_POINT < index) {
+function getPostContent(startPostID, step) {
+  if (STOP_POST_ID < startPostID) {
     console.log('[!] No new post for now :-)');
     return;
   }
 
-  for (var i = index, len = index + step; i < len; i++) {
+  for (var i = startPostID, len = startPostID + step; i < len; i++) {
     Dcard.getContentByPostID(i, savePost);
   }
 
-  setTimeout(function(_index, _step) {
-    console.log('Start At POST ID = ' + _index);
-    if (_index <= STOP_POINT) {
-      getPostContent(_index, _step);
+  setTimeout(function(_startPostID, _step) {
+    console.log('Start At POST ID = ' + _startPostID);
+    if (_startPostID <= STOP_POST_ID) {
+      getPostContent(_startPostID, _step);
     }else {
-      jsonfile.writeFile(STOP_PATH, {stopPoint: STOP_POINT + 1}, function(err) {
+      jsonfile.writeFile(STOP_PATH, {stopPoint: STOP_POST_ID + 1}, function(err) {
         if (err) {
           console.error(err);
         }
       });
     }
-  }, 5000, index + step, step);
+  }, 5000, startPostID + step, step);
 }
 
 function savePost(error, post) {
@@ -85,16 +89,16 @@ function welcomeMessage() {
 function startGetPost() {
   Dcard.getPostIdByForum ('all', 1, function(err, postIdArr) {
     if (!err) {
-      STOP_POINT = postIdArr[0];
+      STOP_POST_ID = postIdArr[0];
       console.log('[*] I wake up, getting posts now.');
-      console.log('[!] Latest Post ID is ' + STOP_POINT);
+      console.log('[!] Latest Post ID is ' + STOP_POST_ID);
       jsonfile.readFile(STOP_PATH, {encoding: 'utf-8'}, function(err, stopObj) {
         if (err) {
           getPostContent(383225);
         } else {
-          var index = stopObj.stopPoint;
-          var step = STOP_POINT - index > 800 ? 800 : STOP_POINT - index;
-          getPostContent(index, step);
+          var startPostID = stopObj.stopPoint;
+          var step = STOP_POST_ID - startPostID > 800 ? 800 : STOP_POST_ID - startPostID;
+          getPostContent(startPostID, step);
         }
       });
     } else {
@@ -104,7 +108,7 @@ function startGetPost() {
 
   setTimeout(function() {
     startGetPost();
-  }, 10000);
+  }, TIMEOUT_NUM);
 }
 
 function main() {
