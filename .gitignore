@@ -2,3 +2,5 @@ node_modules
 images
 development
 get-image.js
+lib/download.js
+lib/image-url-parser.js
