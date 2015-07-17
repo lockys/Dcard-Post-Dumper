@@ -15,11 +15,8 @@ var STOP_PATH = './stop-point.json';
 if (argv.s) {
   var s3Client = require('./lib/aws-s3-client');
 
-  if (argv.b === true) {
-    console.error(new Error('Please specify you bucket name in S3 with -b bucketName'));
-    process.exit();
-  } else if (typeof argv.b === 'undefined') {
-    console.error(new Error('Please specify you bucket name in S3 with -b bucketName'));
+  if (argv.s === true) {
+    console.error(new Error('Please specify you bucket name in S3 with -s bucketName'));
     process.exit();
   }
 }
@@ -62,11 +59,11 @@ function savePost(error, post) {
         console.log('[*] Save a post');
 
         //Enable S3 Uploader.
-        if (argv.s && argv.b) {
+        if (argv.s) {
           var params = {
             localFile: file,
             s3Params: {
-              Bucket: argv.b,
+              Bucket: argv.s,
               Key: category + '/' + id + '.json'
             }
           };
@@ -98,7 +95,7 @@ function ensureExists(path, mask, cb) {
 }
 
 function welcomeMessage() {
-  console.log('Dcard post dumper');
+  console.log('Dcard Post Dumper');
   console.log('1.0.0 alpha edition @ 2015/07/17');
 }
 
