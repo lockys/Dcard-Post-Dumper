@@ -9,7 +9,9 @@ var fs = require('fs');
 var argv = require('minimist')(process.argv.slice(2));
 var Dcard = new Dcard();
 var STOP_POST_ID;
-var TIMEOUT_NUM = 10000;
+var WAKE_TIMEOUT_NUM = 10000;
+var SLOW_WAIT_TIMEOUT = 2000;
+var STEP = 300;
 var STOP_PATH = './stop-point.json';
 
 if (argv.s) {
@@ -44,7 +46,7 @@ function getPostContent(startPostID, step) {
         }
       });
     }
-  }, 5000, startPostID + step, step);
+  }, SLOW_WAIT_TIMEOUT, startPostID + step, step);
 }
 
 function savePost(error, post) {
@@ -110,7 +112,7 @@ function startGetPost() {
           getPostContent(383225);
         } else {
           var startPostID = stopObj.stopPoint;
-          var step = STOP_POST_ID - startPostID > 800 ? 800 : STOP_POST_ID - startPostID;
+          var step = STOP_POST_ID - startPostID > STEP ? STEP : STOP_POST_ID - startPostID;
           getPostContent(startPostID, step);
         }
       });
@@ -121,7 +123,7 @@ function startGetPost() {
 
   setTimeout(function() {
     startGetPost();
-  }, TIMEOUT_NUM);
+  }, WAKE_TIMEOUT_NUM);
 }
 
 function main() {
