@@ -10,8 +10,8 @@ var argv = require('minimist')(process.argv.slice(2));
 var Dcard = new Dcard();
 var STOP_POST_ID;
 var WAKE_TIMEOUT_NUM = 10000;
-var SLOW_WAIT_TIMEOUT = 2000;
-var STEP = 300;
+var SLOW_WAIT_TIMEOUT = 4000;
+var STEP = 800;
 var STOP_PATH = './stop-point.json';
 
 if (argv.s) {
@@ -31,9 +31,15 @@ function getPostContent(startPostID, step) {
     return;
   }
 
-  for (var i = startPostID, len = startPostID + step; i < len; i++) {
-    Dcard.getContentByPostID(i, savePost);
-  }
+  var i = startPostID;
+  var len = startPostID + step;
+
+  (function getContent(_index) {
+    if (_index < len) {
+      Dcard.getContentByPostID(_index, savePost);
+      getContent(_index + 1);
+    }
+  }(i));
 
   setTimeout(function(_startPostID, _step) {
     console.log('Start At POST ID = ' + _startPostID);
@@ -58,7 +64,7 @@ function savePost(error, post) {
   ensureExists('./post/' + category + '/', 0744, function(err) {
     jsonfile.writeFile(file, rawPost, {encoding: 'utf-8'}, function(err) {
       if (!err) {
-        console.log('[*] Save a post');
+        console.log('[*] Save a post which ID = ' + id);
 
         //Enable S3 Uploader.
         if (argv.s) {
