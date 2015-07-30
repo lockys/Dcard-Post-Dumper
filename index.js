@@ -31,7 +31,7 @@ function getPostContent(startPostID) {
     return;
   }
 
-  /* update the step */ 
+  /* update the step */
   var step = STOP_POST_ID - startPostID >= STEP ? STEP : STOP_POST_ID - startPostID + 1;
   var i = startPostID;
   var endPostID = startPostID + step;
@@ -44,7 +44,7 @@ function getPostContent(startPostID) {
   }(i));
 
   if (step < STEP) {
-    console.log('[:-)] Record Post ID to the stop-point.json')
+    console.log('[:-)] Record Post ID to the stop-point.json');
     jsonfile.writeFile(STOP_PATH, {stopPoint: STOP_POST_ID + 1}, function(err) {
       if (err) {
         console.error(err);
@@ -77,8 +77,8 @@ function savePost(error, post) {
             localFile: file,
             s3Params: {
               Bucket: argv.s,
-              Key: category + '/' + id + '.json'
-            }
+              Key: category + '/' + id + '.json',
+            },
           };
           var uploader = s3Client.uploadFile(params);
           uploader.on('error', function(err) {
@@ -113,7 +113,7 @@ function welcomeMessage() {
 }
 
 function startGetPost() {
-  Dcard.getPostIdByForum ('all', 1, function(err, postIdArr) {
+  Dcard.getPostIdByForum('all', 1, function(err, postIdArr) {
     if (!err) {
       STOP_POST_ID = postIdArr[0];
       console.log('[*] I wake up, getting posts now.');
