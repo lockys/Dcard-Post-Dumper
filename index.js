@@ -25,34 +25,39 @@ if (argv.s) {
 
 main();
 
-function getPostContent(startPostID, step) {
+function getPostContent(startPostID) {
   if (STOP_POST_ID < startPostID) {
     console.log('[!] No new post for now :-)');
     return;
   }
 
+  /* update the step */ 
+  var step = STOP_POST_ID - startPostID >= STEP ? STEP : STOP_POST_ID - startPostID + 1;
   var i = startPostID;
-  var len = startPostID + step;
+  var endPostID = startPostID + step;
 
   (function getContent(_index) {
-    if (_index < len) {
+    if (_index < endPostID) {
       Dcard.getContentByPostID(_index, savePost);
       getContent(_index + 1);
     }
   }(i));
 
-  setTimeout(function(_startPostID, _step) {
-    console.log('Start At POST ID = ' + _startPostID);
+  if (step < STEP) {
+    console.log('[:-)] Record Post ID to the stop-point.json')
+    jsonfile.writeFile(STOP_PATH, {stopPoint: STOP_POST_ID + 1}, function(err) {
+      if (err) {
+        console.error(err);
+      }
+    });
+  }
+
+  setTimeout(function(_startPostID) {
     if (_startPostID <= STOP_POST_ID) {
-      getPostContent(_startPostID, _step);
-    }else {
-      jsonfile.writeFile(STOP_PATH, {stopPoint: STOP_POST_ID + 1}, function(err) {
-        if (err) {
-          console.error(err);
-        }
-      });
+      console.log('[!] Start retrieve at POST ID = ' + _startPostID);
+      getPostContent(_startPostID);
     }
-  }, SLOW_WAIT_TIMEOUT, startPostID + step, step);
+  }, SLOW_WAIT_TIMEOUT, startPostID + step);
 }
 
 function savePost(error, post) {
@@ -118,8 +123,7 @@ function startGetPost() {
           getPostContent(383225);
         } else {
           var startPostID = stopObj.stopPoint;
-          var step = STOP_POST_ID - startPostID > STEP ? STEP : STOP_POST_ID - startPostID;
-          getPostContent(startPostID, step);
+          getPostContent(startPostID);
         }
       });
     } else {
